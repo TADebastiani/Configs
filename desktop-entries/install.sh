@@ -1,60 +1,51 @@
 #! /bin/bash
 
-CURRENT_DIR=$(dirname $(readlink -f "$0"))
 BROWSER=null
 GEFORCE_URL=https://play.geforcenow.com/mall/
 ICONS_DIR=$HOME/.local/share/icons
 DESKTOP_ENTRIES_DIR=$HOME/.local/share/applications
 
 function get_browser() {
-  if [ -e /usr/bin/chromium ]
-  then
-    BROWSER='chromium'
-  elif [ -e /usr/bin/chrome ]
-  then
-    BROWSER='chrome'
-  fi
+    if [ -e /usr/bin/chromium ]
+    then
+        BROWSER='chromium'
+    elif [ -e /usr/bin/chrome ]
+    then
+        BROWSER='chrome'
+    else
+        fmt_error "Not found supported browsers."
+        exit
+    fi
 }
 
 function download_icons() {
- geforce_icon_url=$(
-  curl -s ${GEFORCE_URL} |
-  grep 'rel="icon"' |
-  sed -r 's/<link.*href="(.*)".*>/\1/' |
-  xargs | rev | cut -c2- | rev
- )
- geforce_icon_url=${GEFORCE_URL}${geforce_icon_url}
+    local geforce_icon_path=$(
+    curl -s ${GEFORCE_URL} |
+        grep 'rel="icon"' |
+        sed -r 's/<link.*href="(.*)".*>/\1/' |
+        xargs | rev | cut -c2- | rev
+    )
 
- # Need to change, it should gets the original extension from URL
- curl -s ${geforce_icon_url} -o ${ICONS_DIR}/geforcenow.png
+    curl -s "${GEFORCE_URL}${geforce_icon_url}" -o ${ICONS_DIR}/geforcenow.png
 }
-  
+
 
 function geforce_now() {
-  echo -n "Installing Geforce NOW... "
-  get_browser
+    fmt_message "Installing Geforce NOW... "
 
-  if [ -z ${BROWSER} ]
-  then
-    echo "skipping. No supported browser found!"
-    return
-  fi
+    get_browser
 
-  download_icons
+    download_icons
 
-  final_file=${CURRENT_DIR}/geforcenow.desktop
+    local desktop_file=${CURRENT_DIR}/geforcenow.desktop
 
-  cp ${CURRENT_DIR}/geforcenow.base ${final_file}
-  
-  sed -i "s/%BROWSER%/${BROWSER}/" ${final_file}
+    sed -i "s/%BROWSER%/\/usr\/bin\/${BROWSER}/" ${desktop_file}
 
-  desktop-file-install --dir=$DESKTOP_ENTRIES_DIR $final_file
-
-  echo "done"
+    desktop-file-install --dir=$DESKTOP_ENTRIES_DIR $desktop_file
 }
 
-function main() {
-  geforce_now
-}
+configure_desktop_entries() {
+    fmt_title "Configuring Desktop files..."
 
-main
+    geforce_now
+}
