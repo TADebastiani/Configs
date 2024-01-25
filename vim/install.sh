@@ -1,34 +1,26 @@
 #! /bin/bash
 
-CURRENT_DIR=$(dirname $(readlink -f "$0"))
-REPOSITORY_URL=http://github.com/VundleVim/Vundle.vim.git
-BUNDLE_DIR=~/.vim/bundle
+VUNDLE_REPOSITORY=http://github.com/VundleVim/Vundle.vim.git
+BUNDLE_DIR=$HOME/.vim/bundle
 
-function clone_repo() {
-  git clone ${REPOSITORY_URL} ${BUNDLE_DIR}/Vundle.vim
-}
+configure_vim() {
+  fmt_title "Configuring vim..."
 
-function install_dependencies() {
-  echo "Assuming you still using Arch btw!"
+  dependencies=(
+    vim
+  )
 
-  sudo pacman -S cmake gcc make vim python3 npm
-}
+  install_dependencies $dependencies
 
-function install_plugins() {
-  echo "Installing plugins"
+  cp -b $CONFIG_DIR/vim/.vimrc $HOME
 
-  vim +PluginInstall +qall
+  fmt_message "Cloning Vundle repository..."
+  git clone $VUNDLE_REPOSITORY $BUNDLE_DIR/Vundle.vim
 
-  echo "Compiling YCM"
-  python3 ${BUNDLE_DIR}/YouCompleteMe/install.py --clang-completer --ts-completer
-}
-
-function main() {
-  ln -bv ${CURRENT_DIR}/.vimrc ~
+  fmt_message "Installing Vim GitGutter plugin..."
+  git clone https://github.com/airblade/vim-gitgutter.git $HOME/.vim/pack/airblade/start/vim-gitgutter
+  vim -u NONE -c "helptags vim-gitgutter/doc" -c q
   
-  clone_repo
-  install_dependencies
-  install_plugins
+  fmt_message "Installing VIM plugins..."
+  vim +PluginInstall +qall
 }
-
-main
