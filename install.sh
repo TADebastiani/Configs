@@ -117,6 +117,7 @@ main() {
   DOCKER_OPT=0
   DISKS_OPT=0
   KEYBOARD_OPT=0
+  TMUX_OPT=0
 
   # Flag to not ask if some option was passed
   NO_MENU=0
@@ -152,6 +153,10 @@ main() {
               KEYBOARD_OPT=1
               NO_MENU=1
               ;;
+          -t|--tmux)
+              TMUX_OPT=1
+              NO_MENU=1
+              ;;
           -h|--help) echo "USAGE" ;;
       esac
       shift
@@ -164,7 +169,7 @@ main() {
 
   if [ $NVIM_OPT -eq 1 ]
   then
-      source $CONFIG_REPO_DIR/nvim/install.sh
+      source $CONFIG_DIR/scripts/install_nvim.sh
       configure_nvim
   fi
 
@@ -184,6 +189,12 @@ main() {
   then
       source $CONFIG_DIR/docker/install.sh
       configure_docker
+  fi
+
+  if [ $TMUX_OPT -eq 1 ]
+  then
+      source $CONFIG_DIR/tmux/install.sh
+      configure_tmux
   fi
   
   # if $DISKS_OPT

@@ -121,7 +121,7 @@ setup_colors() {
 }
 
 is_installed() {
-  if yay -Qis $1 > /dev/null;
+  if yay -Qi $1 > /dev/null;
   then
     return 0
   fi
