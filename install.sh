@@ -14,6 +14,18 @@ DISK_FORMAT=ext4
 MOUNT_POINT=/mnt/Externo
 UUID_REGEX='[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'
 
+MAIN_PACKAGES=(
+  vim
+  git
+  lazygit
+)
+
+install_main_packages() {
+  fmt_title "Installing main packages..."
+
+  install_dependencies $MAIN_PACKAGES
+}
+
 command_exists() {
   command -v "$@" > /dev/null 2>&1
 }
@@ -193,7 +205,7 @@ main() {
 
   if [ $TMUX_OPT -eq 1 ]
   then
-      source $CONFIG_DIR/tmux/install.sh
+      source $CONFIG_DIR/scripts/install_tmux.sh
       configure_tmux
   fi
   

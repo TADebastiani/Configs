@@ -10,7 +10,6 @@ configure_nvim() {
         neovim
         npm
         git
-        tmux
 	)
 
     install_dependencies $dependencies
