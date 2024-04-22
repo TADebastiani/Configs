@@ -1,8 +1,7 @@
 return {
-<<<<<<< HEAD
     "epwalsh/obsidian.nvim",
-    enable = true,
-    lazy = false,
+    enable = false, -- TODO: control by Environment Variable
+    lazy = true,
     dependencies = {
         -- Required
         "nvim-lua/plenary.nvim",
@@ -23,7 +22,7 @@ return {
             {
                 name = "vivo",
                 path = "~/Documentos/Obsidian/Vaults/vivo",
-            }
+            },
         },
         log_level = vim.log.levels.INFO,
         completion = {
@@ -43,42 +42,7 @@ return {
         { "<leader>of", "<cmd>ObsidianFollowLink<CR>" },
     },
     config = function(_, opts)
-        require('obsidian').setup(opts)
+        require("obsidian").setup(opts)
         vim.opt.conceallevel = 1
-    end
-=======
-  "epwalsh/obsidian.nvim",
-  enabled = false,
-  dependencies = {
-    -- Required
-    "nvim-lua/plenary.nvim",
-    "hrsh7th/nvim-cmp",
-    "nvim-telescope/telescope.nvim",
-    "nvim-treesitter/nvim-treesitter",
-  },
-  opts = {
-    workspaces = {
-      {
-        name = "default",
-        path = "~/Documents/Obsidian",
-      },
-    },
-    log_level = vim.log.levels.INFO,
-    completion = {
-      nvim_cmp = true,
-      min_chars = 3,
-    },
-    picker = {
-      name = "telescope.nvim",
-    },
-    note_id_func = function(title)
-      return title
     end,
-  },
-  keys = {
-    { "<leader>oo", "<cmd>ObsidianOpen<CR>",      desc = "Open file in Obsidian" },
-    { "<leader>os", "<cmd>ObsidianSearch<CR>" },
-    { "<leader>of", "<cmd>ObsidianFollowLink<CR>" },
-  },
->>>>>>> 169061b (add tmux config)
 }
