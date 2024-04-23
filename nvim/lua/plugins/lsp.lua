@@ -1,4 +1,7 @@
 local ensure_installed = {
+    "bashls",
+    "beautysh",
+    "stylua",
     "lua_ls",
     "tsserver",
 }
@@ -35,13 +38,13 @@ return {
         "neovim/nvim-lspconfig",
         lazy = false,
         keys = {
-            { "K", vim.lsp.buf.hover },
-            { "<leader>ca", vim.lsp.buf.code_action, { "n", "v" } },
+            { "K",          vim.lsp.buf.hover },
+            { "<leader>ca", vim.lsp.buf.code_action,   { "n", "v" } },
             { "<leader>gd", vim.lsp.buf.definition },
             { "<leader>gD", vim.lsp.buf.declaration },
             { "<leader>gi", vim.lsp.buf.implementation },
             { "<leader>rn", vim.lsp.buf.rename },
-            { "<leader>e", vim.diagnostic.open_float },
+            { "<leader>e",  vim.diagnostic.open_float },
         },
     },
 }
