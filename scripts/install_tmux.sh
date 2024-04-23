@@ -17,7 +17,7 @@ configure_tmux() {
         git clone -fq https://github.com/tmux-plugins/tpm $TPM_DIR/tpm
     fi
     
-    ln -s $CONFIG_DIR/tmux $TMUX_CONFIG_DIR
-    
+    ln -s $CONFIG_DIR/tmux/tmux.conf $TMUX_CONFIG_DIR/tmux.conf
+
     source $TPM_DIR/tpm/scripts/install_plugins.sh
 }
