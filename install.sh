@@ -130,6 +130,7 @@ main() {
   DISKS_OPT=0
   KEYBOARD_OPT=0
   TMUX_OPT=0
+  ZSH_OPT=0
 
   # Flag to not ask if some option was passed
   NO_MENU=0
@@ -167,6 +168,10 @@ main() {
               ;;
           -t|--tmux)
               TMUX_OPT=1
+              NO_MENU=1
+              ;;
+          -z|--zsh)
+              ZSH_OPT=1
               NO_MENU=1
               ;;
           -h|--help) echo "USAGE" ;;
@@ -207,6 +212,12 @@ main() {
   then
       source $CONFIG_DIR/scripts/install_tmux.sh
       configure_tmux
+  fi
+
+  if [ $ZSH_OPT -eq 1 ]
+  then
+      source $CONFIG_DIR/scripts/install_zsh.sh
+      configure_zsh
   fi
   
   # if $DISKS_OPT
