@@ -108,7 +108,7 @@ tad_precmd() {
 }
 
 setopt prompt_subst
-PROMPT="%(?:%{$fg_bold[green]%}%1{➜%} :%{$fg_bold[red]%}%1{➜%} )%{$reset_color%} "
+PROMPT="%(?:%{$fg_bold[green]%}%1{➜%}:%{$fg_bold[red]%}%1{➜%})%{$reset_color%} "
 RPROMPT="%{$fg[lightgray]%}[%*]%{$reset_color%}"
 
 autoload -U add-zsh-hook

@@ -8,11 +8,16 @@ configure_zsh() {
     curl
   )
 
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-
-  if [ -n $ZSH_CUSTOM ]; then
-    return
+  if [ -z $ZSH ]; then
+    install_dependencies $dependencies
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+  else
+    for theme in $CONFIG_DIR/zsh/themes/*;
+    do
+      local filename=$(basename -- $theme)
+      fmt_message "Installing theme: "${filename%.zsh-theme}
+      ln -s "$theme" "$ZSH/custom/themes/$filename"
+    done
   fi
 
-  ln -s $CONFIG_DIR/zsh/themes/*.zsh-theme $ZSH_CUSTOM/themes/
 }
