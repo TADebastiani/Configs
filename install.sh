@@ -217,7 +217,6 @@ main() {
   if [ $ZSH_OPT -eq 1 ]
   then
       source $CONFIG_DIR/scripts/install_zsh.sh
-      echo $ZSH_CUSTOM
       configure_zsh
   fi
   

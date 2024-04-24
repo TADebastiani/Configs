@@ -16,8 +16,11 @@ configure_zsh() {
     do
       local filename=$(basename -- $theme)
       fmt_message "Installing theme: "${filename%.zsh-theme}
-      ln -s "$theme" "$ZSH/custom/themes/$filename"
+      ln -s --force "$theme" "$ZSH/custom/themes/$filename"
     done
+    
+    fmt_message "Setting 'tadebastiani' as default theme"
+    sed -i -E "s/(ZSH_THEME)=.*/\1=\"tadebastiani\"/g" ~/.zshrc
   fi
 
 }
