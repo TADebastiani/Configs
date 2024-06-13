@@ -7,6 +7,12 @@ local ensure_installed = {
     "jdtls",
 }
 
+local on_attach = function(client)
+    if client.supports_method("textDocument/formatting") then
+        vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
+    end
+end
+
 return {
     {
         "williamboman/mason.nvim",
@@ -14,12 +20,6 @@ return {
         priority = 100,
         config = function()
             require("mason").setup()
-            -- require("mason").setup({
-            --     registries = {
-            --         --"github:mason-org/mason-registry",
-            --         "file:~/.config/nvim/lua/settings/mason-registry",
-            --     },
-            -- })
         end,
     },
     {
@@ -48,10 +48,7 @@ return {
                         if server == "jdtls" then
                             config = vim.tbl_deep_extend("keep", config, jdtls_settings.get_config())
                         else
-                            config.on_attach = function(client)
-                                vim.print(client)
-                                vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
-                            end
+                            config.on_attach = on_attach
                         end
 
                         lspconfig[server].setup(config)
@@ -72,5 +69,23 @@ return {
             { "<leader>rn", vim.lsp.buf.rename },
             { "<leader>e", vim.diagnostic.open_float },
         },
+    },
+    {
+        "nvimtools/none-ls.nvim",
+        config = function()
+            local null_ls = require("null-ls")
+            local custom_formatting = require("settings.formatting")
+            null_ls.setup({
+                debug = true,
+                sources = {
+                    null_ls.builtins.formatting.stylua,
+                    -- Javascript/Typescript
+                    --null_ls.builtins.diagnostics.eslint,
+                    null_ls.builtins.formatting.prettier,
+                    custom_formatting.palantir,
+                },
+                on_attach = on_attach,
+            })
+        end,
     },
 }

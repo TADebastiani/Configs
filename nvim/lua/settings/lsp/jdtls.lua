@@ -74,25 +74,23 @@ M.get_config = function()
             vim.opt.softtabstop = 4
             vim.opt.shiftwidth = 4
             vim.opt.expandtab = true
-            -- if client.name == "jdtls" then
-            --     -- TODO: not working
-            --     -- require("which-key").register({
-            --     --     ["<leader>de"] = { "<cmd>DapContinue<cr>", "[JDLTS] Show debug configurations" },
-            --     --     ["<leader>ro"] = {
-            --     --         "<cmd>lua require'jdtls'.organize_imports()<cr>",
-            --     --         "[JDLTS] Organize imports",
-            --     --     },
-            --     -- })
-            --     -- jdtls = require("jdtls")
-            --     -- jdtls.setup_dap({ hotcodereplace = "auto" })
-            --     -- jdtls.setup.add_commands()
-            --     -- -- Auto-detect main and setup dap config
-            --     -- require("jdtls.dap").setup_dap_main_class_configs({
-            --     --     config_overrides = {
-            --     --         vmArgs = "-Dspring.profiles.active=local",
-            --     --     },
-            --     -- })
-            -- end
+            -- TODO: not working
+            -- require("which-key").register({
+            --     ["<leader>de"] = { "<cmd>DapContinue<cr>", "[JDLTS] Show debug configurations" },
+            --     ["<leader>ro"] = {
+            --         "<cmd>lua require'jdtls'.organize_imports()<cr>",
+            --         "[JDLTS] Organize imports",
+            --     },
+            -- })
+            -- jdtls = require("jdtls")
+            -- jdtls.setup_dap({ hotcodereplace = "auto" })
+            -- jdtls.setup.add_commands()
+            -- -- Auto-detect main and setup dap config
+            -- require("jdtls.dap").setup_dap_main_class_configs({
+            --     config_overrides = {
+            --         vmArgs = "-Dspring.profiles.active=local",
+            --     },
+            -- })
         end,
         settings = {
             java = {
