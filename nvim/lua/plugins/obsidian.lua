@@ -1,7 +1,10 @@
 return {
     "epwalsh/obsidian.nvim",
-    enable = false, -- TODO: control by Environment Variable
-    lazy = true,
+    enable = function()
+        -- Checks if Obsidian is a valid command
+        return vim.fn.executable('obsidian')
+    end,
+    lazy = false,
     dependencies = {
         -- Required
         "nvim-lua/plenary.nvim",
@@ -15,14 +18,14 @@ return {
                 name = "personal",
                 path = "~/Documentos/Obsidian/Vaults/personal",
             },
-            {
-                name = "compass",
-                path = "~/Documentos/Obsidian/Vaults/compass",
-            },
-            {
-                name = "vivo",
-                path = "~/Documentos/Obsidian/Vaults/vivo",
-            },
+            -- {
+            --     name = "compass",
+            --     path = "~/Documentos/Obsidian/Vaults/compass",
+            -- },
+            -- {
+            --     name = "vivo",
+            --     path = "~/Documentos/Obsidian/Vaults/vivo",
+            -- },
         },
         log_level = vim.log.levels.INFO,
         completion = {
