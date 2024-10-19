@@ -16,16 +16,8 @@ return {
         workspaces = {
             {
                 name = "personal",
-                path = "~/Documentos/Obsidian/Vaults/personal",
+                path = "~/Documentos/Obsidian/Vault",
             },
-            -- {
-            --     name = "compass",
-            --     path = "~/Documentos/Obsidian/Vaults/compass",
-            -- },
-            -- {
-            --     name = "vivo",
-            --     path = "~/Documentos/Obsidian/Vaults/vivo",
-            -- },
         },
         log_level = vim.log.levels.INFO,
         completion = {
