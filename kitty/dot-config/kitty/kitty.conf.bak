@@ -1,0 +1,6 @@
+# BEGIN_KITTY_THEME
+# IR Black
+include current-theme.conf
+# END_KITTY_THEME
+
+enable_audio_bell no
