@@ -1,9 +1,10 @@
 "$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
-$directory\
-$git_branch\
-$git_status\
+$username \
+$directory \
+$git_branch \
+$git_status \
 $line_break$character"""
 
 right_format="""$time"""
@@ -77,25 +78,30 @@ RedHatEnterprise = "󱄛"
 
 [username]
 show_always = true
-style_user = "bg:surface0 fg:text"
-style_root = "bg:surface0 fg:text"
-format = '[ $user ]($style)'
+format = '[$user]($style)'
 
 [directory]
-format = "[ $path ]($style)"
-truncation_length = 3
+format = "[$path]($style)"
+truncate_to_repo = true
+truncation_length = 8
 truncation_symbol = "…/"
 
-[directory.substitutions]
-"Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = "󰝚 "
-"Pictures" = " "
-"Developer" = "󰲋 "
-
+# [directory.substitutions]
+# "~/Documentos/Projects" = "󰲋 "
+# "Documents" = "󰈙 "
+# "~/Documentos" = "󰈙 "
+# "Downloads" = " "
+# "Music" = "󰝚 "
+# "Musicas" = "󰝚 "
+# "Pictures" = " "
+# "Imagens" = " "
 
 [git_status]
-modified = '[](yellow)'
+style = "fg:yellow"
+modified = ''
+ahead = ''
+behind = ''
+diverged = ''
 format = '([$ahead_behind$modified]($style) )'
 
 [nodejs]
