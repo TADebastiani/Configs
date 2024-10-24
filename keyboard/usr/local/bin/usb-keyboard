@@ -1,0 +1,44 @@
+#!/bin/bash
+GSETTING=/usr/bin/gsettings
+SETXKBMAP=/usr/bin/setxkbmap
+XINPUT=/usr/bin/xinput
+
+KBNAME="Keychron K3"
+XKBMODEL="pc105"
+XKBLAYOUT="us"
+XKBVARIANT="intl"
+
+USERLIST=$(w -h | cut -d' ' -f1 | sort | uniq)
+
+for CUR_USER in ${USERLIST}; do
+    CUR_USER_XAUTH="$(sudo -Hiu ${CUR_USER} env | grep -e "^HOME=" | cut -d'=' -f2)/.Xauthority"
+    CUR_USER_DISPL=":0"
+
+    export XAUTHORITY="${CUR_USER_XAUTH}"
+    export DISPLAY="${CUR_USER_DISPL}"
+
+    if [ -f "${CUR_USER_XAUTH}" ]; then
+
+        case $1 in
+            'in')
+                KEYBOARDS=$($XINPUT list --short | grep $KBNAME | grep keyboard | sed -e 's/^.*id=\([0-9]\+\).*/\1/g')
+                if [ -n "$KEYBOARDS" ]; then
+                    [ -x $GSETTING ] && $GSETTING set org.gnome.settings-daemon.plugins.keyboard active false
+                    for ID in $KEYBOARDS; do
+                        [ -x $SETXKBMAP ] && $SETXKBMAP -device $ID -layout $XKBLAYOUT -model $XKBMODEL -variant $XKBVARIANT
+                    done
+                    notify-send "Changed $KBNAME layout to $XKBLAYOUT-$XKBVARIANT ($XKBMODEL)"
+                fi
+                echo "keyboards id(s) is (are) $KEYBOARDS"
+                ;;
+            'out')
+                # apparently nothing to do with TDE (trinity KDE)
+                [ -x $GSETTING ] && $GSETTING set org.gnome.settings-daemon.plugins.keyboard active true
+                ;;
+            *)
+                printf "wrong parameter: $1\n"
+                exit 1
+                ;;
+        esac
+    fi 
+done

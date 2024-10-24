@@ -1,0 +1,2 @@
+ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="024f", OWNER="tiago", ACTION=="add", RUN+="/usr/local/bin/usb-keybooard-udev in"
+ATTRS{idVendor}=="05ac", ATTRS{idProduct}=="024f", OWNER="tiago", ACTION=="remove", RUN+="/usr/local/bin/usb-keybooard-udev out"
