@@ -16,7 +16,7 @@ vim.keymap.set("n", "N", "Nzzzv")
 -- paste over selection keeping yanked buffer
 vim.keymap.set("x", "<leader>p", '"_dP')
 
--- yake to system clipboard
+-- yanke to system clipboard
 vim.keymap.set("n", "<leader>y", '"+y')
 vim.keymap.set("v", "<leader>y", '"+y')
 vim.keymap.set("n", "<leader>Y", '"+Y')
@@ -28,3 +28,6 @@ vim.keymap.set("n", "<C-h>", ":wincmd h<CR>")
 vim.keymap.set("n", "<C-l>", ":wincmd l<CR>")
 vim.keymap.set("n", "<C-j>", ":wincmd j<CR>")
 vim.keymap.set("n", "<C-k>", ":wincmd k<CR>")
+
+-- LSP format file
+vim.keymap.set("n", "<leader>f", vim.lsp.buf.format, {})

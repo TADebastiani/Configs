@@ -1,8 +1,9 @@
 return {
     "epwalsh/obsidian.nvim",
-    enable = function()
+    enabled = function()
         -- Checks if Obsidian is a valid command
-        return vim.fn.executable('obsidian')
+        -- return vim.fn.executable('obsidian')
+        return false
     end,
     lazy = false,
     dependencies = {

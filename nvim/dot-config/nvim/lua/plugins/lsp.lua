@@ -1,17 +1,11 @@
 local ensure_installed = {
-    "bashls",
+    "bash-language-server",
     "beautysh",
     "stylua",
-    "lua_ls",
+    "lua-language-server",
     "tsserver",
-    "jdtls",
+    "gdtoolkit",
 }
-
-local on_attach = function(client)
-    if client.supports_method("textDocument/formatting") then
-        vim.keymap.set("n", "<leader>gf", vim.lsp.buf.format, {})
-    end
-end
 
 return {
     {
@@ -24,31 +18,31 @@ return {
     },
     {
         "williamboman/mason-lspconfig.nvim",
-        dependencies = {
-            "mfussenegger/nvim-jdtls",
-        },
         lazy = false,
         config = function()
             local lspconfig = require("lspconfig")
             local cmp_lsp = require("cmp_nvim_lsp")
-            local jdtls_settings = require("settings.lsp.jdtls")
+
+            local capabilities = vim.tbl_deep_extend(
+                "force",
+                {},
+                vim.lsp.protocol.make_client_capabilities(),
+                cmp_lsp.default_capabilities()
+            )
 
             require("mason-lspconfig").setup({
                 ensure_installed,
-                automatic_installation = true,
+                automatic_installation = {
+                    exclude = { "jdtls" },
+                },
                 handlers = {
                     function(server)
-                        local capabilities = vim.lsp.protocol.make_client_capabilities()
-                        capabilities.textDocument.completion.completionItem.snippetSupport = true
-
                         local config = {
-                            capabilities = cmp_lsp.default_capabilities(capabilities),
+                            capabilities = capabilities,
                         }
 
-                        if server == "jdtls" then
-                            config = vim.tbl_deep_extend("keep", config, jdtls_settings.get_config())
-                        else
-                            config.on_attach = on_attach
+                        if server == "gdscript" then
+                            config = vim.tbl_deep_extend("keep", config, require("settings.lsp.gdscript"))
                         end
 
                         lspconfig[server].setup(config)
@@ -74,15 +68,14 @@ return {
         "nvimtools/none-ls.nvim",
         config = function()
             local null_ls = require("null-ls")
-            local custom_formatting = require("settings.formatting")
             null_ls.setup({
                 debug = true,
                 sources = {
                     null_ls.builtins.formatting.stylua,
+
                     -- Javascript/Typescript
-                    --null_ls.builtins.diagnostics.eslint,
+                    null_ls.builtins.diagnostics.eslint,
                     null_ls.builtins.formatting.prettier,
-                    custom_formatting.palantir,
                 },
                 on_attach = on_attach,
             })
