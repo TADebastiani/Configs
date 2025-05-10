@@ -1,17 +1,1 @@
-configuration{
-    modi: "run,window,combi";
-    font: "mono 10";
-    icon-theme: "Oranchelo";
-    show-icons: true;
-    terminal: "kitty";
-    drun-display-format: "{icon} {name}";
-    location: 0;
-    disable-history: false;
-    hide-scrollbar: true;
-    display-combi: " 󰍹 All ";
-    display-run: " 󰜎 Run ";
-    display-window: " 🪟 Window";
-    sidebar-mode: true;
-}
-
-@theme "catppuccin-mocha"
+ @theme "~/.local/share/rofi/themes/arc_dark_transparent_colors.rasi"
