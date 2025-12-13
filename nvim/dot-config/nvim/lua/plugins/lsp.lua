@@ -4,7 +4,7 @@ local ensure_installed = {
     "stylua",
     "lua-language-server",
     "tsserver",
-    "gdtoolkit",
+--    "gdtoolkit",
 }
 
 return {
@@ -20,7 +20,6 @@ return {
         "williamboman/mason-lspconfig.nvim",
         lazy = false,
         config = function()
-            local lspconfig = require("lspconfig")
             local cmp_lsp = require("cmp_nvim_lsp")
 
             local capabilities = vim.tbl_deep_extend(
@@ -30,22 +29,35 @@ return {
                 cmp_lsp.default_capabilities()
             )
 
+            vim.lsp.config("gdscript", {})
+
             require("mason-lspconfig").setup({
-                ensure_installed,
+                ensure_installed = ensure_installed,
                 automatic_installation = {
                     exclude = { "jdtls" },
                 },
+                formatters_by_ft = {
+                    gdscript = { "gdformat" },
+                },
                 handlers = {
-                    function(server)
-                        local config = {
+                    function(server) -- default
+                        vim.lsp.config(server, {
                             capabilities = capabilities,
-                        }
+                        })
+                    end,
 
-                        if server == "gdscript" then
-                            config = vim.tbl_deep_extend("keep", config, require("settings.lsp.gdscript"))
-                        end
-
-                        lspconfig[server].setup(config)
+                    ["lua_ls"] = function()
+                        vim.lsp.config("lua_ls", {
+                            capabilities = capabilities,
+                            settings = {
+                                Lua = {
+                                    runtime = { version = "Lua 5.1" },
+                                    diagnostics = {
+                                        globals = { "bit", "vim", "it", "describe", "before_each", "after_each" },
+                                    },
+                                },
+                            },
+                        })
                     end,
                 },
             })
@@ -70,14 +82,25 @@ return {
             local null_ls = require("null-ls")
             null_ls.setup({
                 debug = true,
+                log_level = "trace",
+                diagnostic_config = {
+                    float = {
+                        focusable = false,
+                        style = "minimal",
+                        border = "rounded",
+                        source = "always",
+                        header = "",
+                        prefix = "",
+                    },
+                },
                 sources = {
                     null_ls.builtins.formatting.stylua,
-
                     -- Javascript/Typescript
-                    null_ls.builtins.diagnostics.eslint,
+                    --null_ls.builtins.diagnostics.eslint,
                     null_ls.builtins.formatting.prettier,
+                    -- godot
+                    null_ls.builtins.formatting.gdformat,
                 },
-                on_attach = on_attach,
             })
         end,
     },
