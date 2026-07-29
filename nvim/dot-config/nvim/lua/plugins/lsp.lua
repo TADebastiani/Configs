@@ -1,9 +1,9 @@
 local ensure_installed = {
-    "bash-language-server",
-    "beautysh",
+--    "bash-language-server",
+--    "beautysh",
     "stylua",
-    "lua-language-server",
-    "tsserver",
+--    "lua-language-server",
+--    "tsserver",
 --    "gdtoolkit",
 }
 

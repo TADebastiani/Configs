@@ -1,0 +1,10 @@
+-- Auto Commands for Markdown Settings
+-- vim.api.nvim_create_autocmd("FileType", {
+--   pattern = "markdown",
+--   callback = function()
+--     vim.opt.wrap = true -- Enable soft wrapping for markdown
+--     vim.opt.textwidth = 80 -- Optional: Set a line width for formatting
+--     vim.opt.colorcolumn = "80" -- Optional: Visual guide for textwidth
+--     vim.opt.formatoptions:append("a") -- 'a' for auto-format on insert/delete
+--   end,
+-- })
