@@ -55,7 +55,15 @@ MouseArea {
     PopupWindow {
         id: popup
 
-        visible: root.menuOpen && !!root.modelData.menu
+        readonly property bool wantOpen: root.menuOpen && !!root.modelData.menu
+
+        // The content is built while the window is still unmapped, and the window
+        // is only mapped once its size stopped changing. Otherwise it would show
+        // up small and then reshape itself while the slide-in already runs.
+        // Stays mapped while the slide-out runs.
+        property bool ready
+
+        visible: (wantOpen && ready) || slideOut.running
         color: "transparent"
         implicitWidth: background.implicitWidth
         implicitHeight: background.implicitHeight
@@ -73,37 +81,126 @@ MouseArea {
             }
         }
 
-        StyledRect {
-            id: background
+        // The window ends where the bar starts, so clipping here makes the menu
+        // look like it rises out from behind the bar
+        Item {
+            id: slide
+
+            // 1 = fully below the window edge (hidden), 0 = final position
+            property real hidden: 1
+            property int duration: 400
 
             anchors.fill: parent
-            implicitWidth: menuLoader.implicitWidth + Config.padding.large * 2
-            implicitHeight: menuLoader.implicitHeight + Config.padding.large * 2
-            color: Theme.surface0
-            radius: Config.rounding.extraLarge
+            clip: true
 
-            HoverHandler {
-                id: popupHover
+            Anim {
+                id: slideIn
 
-                onHoveredChanged: {
-                    if (hovered)
-                        closeTimer.stop();
-                    else
-                        closeTimer.restart();
-                }
+                target: slide
+                property: "hidden"
+                to: 0
+                type: Anim.Emphasized
+                duration: slide.duration
+                // Anim.Emphasized's own curve reaches 1 at 25% of the time
+                easing.bezierCurve: Config.anim.emphasizedDecel
             }
 
-            // Recreated on each open so a submenu never survives a reopen
-            Loader {
-                id: menuLoader
+            Anim {
+                id: slideOut
 
-                active: popup.visible
-                anchors.centerIn: parent
+                target: slide
+                property: "hidden"
+                to: 1
+                type: Anim.Emphasized
+                duration: slide.duration
+                easing.bezierCurve: Config.anim.emphasizedAccel
+            }
 
-                sourceComponent: TrayMenu {
-                    trayItem: root.modelData.menu // qmllint disable unresolved-type
-                    onCloseRequested: root.menuDismissed()
+            StyledRect {
+                id: background
+
+                width: parent.width
+                height: parent.height
+                y: slide.hidden * height
+                implicitWidth: menuLoader.implicitWidth + Config.padding.medium * 2
+                implicitHeight: menuLoader.implicitHeight + Config.padding.large * 2
+                color: Theme.surface0
+                radius: Config.rounding.small
+
+                HoverHandler {
+                    id: popupHover
+
+                    onHoveredChanged: {
+                        if (hovered)
+                            closeTimer.stop();
+                        else
+                            closeTimer.restart();
+                    }
                 }
+
+                // Recreated on each open so a submenu never survives a reopen
+                Loader {
+                    id: menuLoader
+
+                    active: popup.wantOpen || popup.visible
+                    anchors.centerIn: parent
+
+                    sourceComponent: TrayMenu {
+                        trayItem: root.modelData.menu // qmllint disable unresolved-type
+                        onCloseRequested: root.menuDismissed()
+                    }
+                }
+            }
+        }
+
+        Timer {
+            id: settle
+
+            interval: 50
+            onTriggered: {
+                popup.ready = true;
+                slideIn.restart();
+            }
+        }
+
+        Connections {
+            target: background
+
+            function onImplicitWidthChanged(): void {
+                if (popup.wantOpen && !popup.ready)
+                    settle.restart();
+            }
+
+            function onImplicitHeightChanged(): void {
+                if (popup.wantOpen && !popup.ready)
+                    settle.restart();
+            }
+        }
+
+        // Both animations start from wherever the menu currently is, so a
+        // hover during the slide-out reverses it instead of jumping
+        onWantOpenChanged: {
+            if (wantOpen) {
+                slideOut.stop();
+                if (visible)
+                    slideIn.restart();
+                else
+                    settle.restart();
+            } else {
+                settle.stop();
+                if (visible) {
+                    slideIn.stop();
+                    slideOut.restart();
+                }
+            }
+        }
+
+        onVisibleChanged: {
+            if (!visible) {
+                slideIn.stop();
+                slideOut.stop();
+                slide.hidden = 1;
+                ready = false;
             }
         }
     }

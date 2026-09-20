@@ -44,23 +44,24 @@ StackView {
         padding: - Config.padding.small
         spacing: Config.spacing.small / 2
 
-        opacity: shown ? 1 : 0
-        scale: shown ? 1 : 0.8
-        
+        // Disabled while testing the popup slide-in (fade + zoom on creation)
+        // opacity: shown ? 1 : 0
+        // scale: shown ? 1 : 0.8
+
         Component.onCompleted: shown = true
         StackView.onActivating: shown = true
         StackView.onDeactivating: shown = false
         StackView.onRemoved: destroy()
 
-        Behavior on opacity {
-            Anim {
-                type: Anim.DefaultEffects
-            }
-        }
+        // Behavior on opacity {
+        //     Anim {
+        //         type: Anim.DefaultEffects
+        //     }
+        // }
 
-        Behavior on scale {
-            Anim {}
-        }
+        // Behavior on scale {
+        //     Anim {}
+        // }
 
         QsMenuOpener {
             id: menuOpener
@@ -79,7 +80,7 @@ StackView {
                 implicitWidth: Config.sizes.bar.trayMenuWidth
                 implicitHeight: modelData.isSeparator ? 1 : children.implicitHeight
 
-                radius: Config.rounding.small
+                radius: Config.rounding.extraSmall
                 color: modelData.isSeparator || isHovered ? Theme.overlay0 : "transparent"
 
                 Loader {
