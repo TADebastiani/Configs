@@ -1,14 +1,13 @@
 pragma Singleton
 
 import QtQuick
+import Quickshell
 
 // Catppuccin Mocha palette (https://catppuccin.com/palette) plus a few
 // layout constants shared by every widget in the bar.
 //
-// Because this file sits next to shell.qml, every other .qml file in this
-// directory can reference it as `Theme.xxx` with no import needed - QML
-// auto-imports sibling files in the same folder.
-QtObject {
+// Singleton: use it anywhere with `import qs`, then `Theme.xxx`.
+Singleton {
     readonly property color rosewater: "#f5e0dc"
     readonly property color flamingo:  "#f2cdcd"
     readonly property color pink:      "#f5c2e7"
@@ -42,5 +41,7 @@ QtObject {
     // Layout
     readonly property int barHeight: 32
     readonly property int pillRadius: 8
+    readonly property string fontFamily: "NotoSans Nerd Font Propo"
+    readonly property string fontFamilyMono: "MesloLGS Nerd Font"
     readonly property int fontSize: 13
 }

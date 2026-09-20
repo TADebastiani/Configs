@@ -43,7 +43,8 @@ NumberAnimation {
         return Config.anim.durations[types[idx]];
     }
 
-    easing: {
+    easing.type: Easing.BezierSpline
+    easing.bezierCurve: {
         if (type === Anim.FastSpatial)
             return Config.anim.expressiveFastSpatial;
         if (type === Anim.DefaultSpatial)

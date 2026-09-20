@@ -3,5 +3,6 @@ import qs
 
 ColorAnimation {
     duration: Config.anim.durations.expressiveSlowEffects
-    easing: Config.anim.expressiveSlowEffects
+    easing.type: Easing.BezierSpline
+    easing.bezierCurve: Config.anim.expressiveSlowEffects
 }

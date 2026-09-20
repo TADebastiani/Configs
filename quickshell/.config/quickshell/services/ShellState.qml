@@ -40,9 +40,7 @@ Singleton {
     component Components: QtObject {
         required property ShellScreen modelData
 
-        property var interactionWrapper
         property var bar
-        property var panels
     }
 
     component ComponentRef: QtObject {

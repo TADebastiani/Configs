@@ -68,7 +68,7 @@ StyledClippingRect {
         Loader {
             asynchronous: true
             anchors.verticalCenter: parent.verticalCenter
-            active: BarConfig.workspaces.activeIndicator
+            active: Config.bar.workspaces.activeIndicator
         }
 
         Behavior on scale {

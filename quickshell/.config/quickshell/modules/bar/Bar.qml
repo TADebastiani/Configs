@@ -1,6 +1,5 @@
 pragma ComponentBehavior: Bound
 
-import "popouts" as BarPopouts
 import "components"
 import "components/workspaces"
 import QtQuick
@@ -15,8 +14,6 @@ RowLayout {
     id: root
 
     required property ShellScreen screen
-    required property ScreenState screenState
-    required property BarPopouts.Wrapper popouts
 
     default property int hPadding: Config.padding.large
 
@@ -27,7 +24,7 @@ RowLayout {
     Repeater {
         id: repeater
         model: {
-            values: BarConfig.entries.filter(e => e.enabled);
+            values: Config.bar.entries.filter(e => e.enabled);
         }
 
         DelegateChooser {
@@ -74,13 +71,6 @@ RowLayout {
                     }
                 }
             }
-        }
-    }
-
-    function closeTray(): void {
-        for (let i =0; i< repeater.count; i++){
-            const tray = (repeater.itemAt(i) as EntryWrapper).item as Tray;
-            if (tray) tray.expanded = false;
         }
     }
 

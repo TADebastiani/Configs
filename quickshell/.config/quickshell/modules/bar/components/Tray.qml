@@ -12,17 +12,17 @@ import qs.services
 StyledRect {
     id: root
 
-    readonly property alias layout: layout
-    readonly property alias items: items
-    readonly property alias expandIcon: expandIcon
-
     readonly property int padding: Config.padding.extraSmall
     readonly property int spacing: Config.spacing.extraSmall
 
-    property bool expanded: true
+    // Tray item whose menu is currently open, if any
+    property SystemTrayItem menuItem
+
+    readonly property bool expanded: hover.hovered || menuItem !== null
+    readonly property bool compact: !!Config.bar.tray?.compact
 
     readonly property real nonAnimWidth: {
-        if (!BarConfig.tray?.compact)
+        if (!compact)
             return layout.implicitWidth + padding * 2;
         if (expanded)
             return expandIcon.implicitWidth + layout.implicitWidth + spacing + padding;
@@ -36,6 +36,10 @@ StyledRect {
     color: Theme.surface1
     radius: Config.rounding.large
 
+    HoverHandler {
+        id: hover
+    }
+
     Row {
         id: layout
 
@@ -46,21 +50,21 @@ StyledRect {
         }
         spacing: Config.spacing.small
 
-        opacity: root.expanded ? 1 : 0
+        opacity: root.expanded ? 0.5 : 1
 
         add: Transition {
             Anim {
                 properties: "scale"
                 from: 0
                 to: 1
-                easing: Config.anim.standardDecel
+                easing.bezierCurve: Config.anim.standardDecel
             }
         }
         move: Transition {
             Anim {
                 properties: "scale"
                 to: 1
-                easing: Config.anim.standardDecel
+                easing.bezierCurve: Config.anim.standardDecel
             }
             Anim {
                 properties: "x,y"
@@ -74,7 +78,16 @@ StyledRect {
                 values: SystemTray.items.values
             }
 
-            TrayItem {}
+            TrayItem {
+                // Collapsed compact tray only shows the expand icon
+                enabled: !root.compact || root.expanded
+                menuOpen: root.menuItem === modelData
+                onMenuRequested: root.menuItem = modelData
+                onMenuDismissed: {
+                    if (root.menuItem === modelData)
+                        root.menuItem = null;
+                }
+            }
         }
 
         Behavior on opacity {
@@ -92,8 +105,7 @@ StyledRect {
             right: parent.right
         }
 
-        //active: BarConfig.tray?.compact && items > 0
-        active: false
+        active: root.compact && items.count > 0
 
         sourceComponent: Item {
             implicitHeight: expandIconInner.implicitHeight

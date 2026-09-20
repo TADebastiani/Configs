@@ -23,12 +23,19 @@ RowLayout {
     readonly property int focusedShape: focusedShapeList[Math.floor(Math.random() * focusedShapeList.length)]
 
     Layout.alignment: Qt.AlignLeft
-    //Layout.preferredWidth: size
 
     spacing: 0
 
     onFocusedChanged: updateShape()
     Component.onCompleted: updateShape()
+
+    TapHandler {
+        onTapped: Hyprland.dispatch(`hl.dsp.focus({ workspace = ${root.ws} })`)
+    }
+
+    HoverHandler {
+        cursorShape: Qt.PointingHandCursor
+    }
 
     Loader {
         id: indicator
@@ -49,8 +56,9 @@ RowLayout {
             color: root.focused ? Theme.mauve : Theme.overlay0
             scale: root.focused ? 2 / 3 : 2 / 4
 
-            animationEasing: Config.anim.expressiveFastEffects
-            animationDuration: Config.anim.durations.expressiveFastEffects 
+            animationEasing.type: Easing.BezierSpline
+            animationEasing.bezierCurve: Config.anim.expressiveFastEffects
+            animationDuration: Config.anim.durations.expressiveFastEffects
 
             StyledText {
                 text: root.ws
@@ -78,33 +86,6 @@ RowLayout {
                     type: Anim.FastEffects
                 }
             }
-        }
-    }
-
-    Component {
-        id: textComponent
-
-        StyledText {
-            animate: true
-            text: {
-                if (root.focused) {
-                    const label = BarConfig.workspaces.activeLabel;
-                    if (label)
-                        return label;
-                }
-
-                const label = BarConfig.workspaces.label;
-                if (label)
-                    return label;
-
-                const ws = Hyprland.workspaces.values.find(w => w.id === root.ws);
-                const wsName = !ws || ws.name == root.ws ? root.ws : ws.name[0];
-
-                //const upper = BarConfig.workspaces.capitalisation;
-                return wsName;
-            }
-            color: Theme.text
-            verticalAlignment: Qt.AlignVCenter
         }
     }
 

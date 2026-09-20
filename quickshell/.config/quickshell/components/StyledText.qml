@@ -12,7 +12,7 @@ Text {
     renderType: Text.NativeRendering
     textFormat: Text.PlainText
     color: Theme.text
-    //font:
+    font.family: Theme.fontFamily
 
     Behavior on color {
         CAnim {}

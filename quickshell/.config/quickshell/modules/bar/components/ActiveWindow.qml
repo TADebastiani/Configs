@@ -37,15 +37,14 @@ Item {
         const otherModules = bar.children.filter(c => c.entryId && c.item !== this && c.entryId !== "spacer");
         const otherWidth = otherModules.reduce((acc, curr) => acc + (curr.item.nonAnimWidth ?? curr.width), 0);
         const width = bar.width - otherWidth - bar.spacing * (bar.children.length - 1) - bar.hPadding * 2;
-        if (width <= 0) 
-            console.error("[ActiveWindow] invalid width");
-        return width;
+        // Negative until the bar has been laid out
+        return Math.max(0, width);
     }
 
     property Title current: text
 
     //clip: true // caution!
-    implicitWidth: icon.impliciWidth + current.implictWidth + current.anchors.leftMargin
+    implicitWidth: icon.implicitWidth + current.implicitWidth + current.anchors.leftMargin
     implicitHeight: Math.max(icon.implicitHeight, current.implicitHeight)
 
     // For bar-popouts
@@ -82,7 +81,7 @@ Item {
         id: metrics
 
         text: root.windowTitle
-        // Configure font
+        font.family: Theme.fontFamily
         elide: Qt.ElideRight
         elideWidth: root.maxWidth - icon.width
 

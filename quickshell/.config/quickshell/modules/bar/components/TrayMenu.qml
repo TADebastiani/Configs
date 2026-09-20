@@ -12,8 +12,9 @@ import qs.services
 StackView {
     id: root
 
-    required property PopoutState popouts
     required property QsMenuHandle trayItem
+
+    signal closeRequested
 
     implicitHeight: currentItem?.implicitHeight ?? 0
     implicitWidth: currentItem?.implicitWidth ?? 0
@@ -113,7 +114,7 @@ StackView {
                                     }));
                                 } else {
                                     item.modelData.triggered();
-                                    root.popouts.hasCurrent = false;
+                                    root.closeRequested();
                                 }
                             }
                         }
@@ -147,7 +148,7 @@ StackView {
                             id: labelMetrics
 
                             text: item.modelData.text
-                            //font
+                            font.family: Theme.fontFamily
 
                             elide: Text.ElideRight
                             elideWidth: {
