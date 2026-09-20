@@ -41,7 +41,4 @@ Singleton {
     // Layout
     readonly property int barHeight: 32
     readonly property int pillRadius: 8
-    readonly property string fontFamily: "NotoSans Nerd Font Propo"
-    readonly property string fontFamilyMono: "MesloLGS Nerd Font"
-    readonly property int fontSize: 13
 }
