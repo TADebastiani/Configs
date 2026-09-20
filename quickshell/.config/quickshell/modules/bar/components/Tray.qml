@@ -30,10 +30,10 @@ StyledRect {
     }
 
     visible: width > 0
-    implicitHeight: Config.sizes.bar.innerHeight
+    implicitHeight: Config.sizes.bar.innerHeight - Config.spacing.small
     implicitWidth: nonAnimWidth
 
-    color: Theme.surface1
+    color: Theme.surface0
     radius: Config.rounding.large
 
     HoverHandler {

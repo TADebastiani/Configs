@@ -153,7 +153,7 @@ Rectangle {
                     Text {
                         Layout.fillWidth: true
                         text: volPill.muted ? "Muted" : Math.round(volPill.vol * 100) + "%"
-                        font.pixelSize: Theme.fontSize
+                        font.pixelSize: Config.font.size.small
                         color: Theme.text
                     }
 
@@ -166,7 +166,7 @@ Rectangle {
                         Text {
                             anchors.centerIn: parent
                             text: volPill.muted ? "🔇" : "🔊"
-                            font.pixelSize: Theme.fontSize - 2
+                            font.pixelSize: Config.font.size.small - 2
                         }
 
                         MouseArea {

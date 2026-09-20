@@ -62,11 +62,11 @@ RowLayout {
 
             StyledText {
                 text: root.ws
-                color: root.focused ? Theme.surface1 : Theme.surface1
+                color: Theme.surface0
                 verticalAlignment: Qt.AlignVCenter
                 horizontalAlignment: Qt.AlignHCenter
                 scale: 3 / 4
-                font.pixelSize: 30
+                font.pixelSize: Config.font.size.large * 1.5
                 font.bold: true
 
                 anchors {

@@ -12,7 +12,8 @@ Text {
     renderType: Text.NativeRendering
     textFormat: Text.PlainText
     color: Theme.text
-    font.family: Theme.fontFamily
+    font.family: Config.font.family
+    font.pixelSize: Config.font.size.small
 
     Behavior on color {
         CAnim {}

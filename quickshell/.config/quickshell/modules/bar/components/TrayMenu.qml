@@ -41,12 +41,12 @@ StackView {
         property bool isSubMenu
         property bool shown
 
-        padding: Config.padding.small
-        spacing: Config.spacing.small
+        padding: - Config.padding.small
+        spacing: Config.spacing.small / 2
 
         opacity: shown ? 1 : 0
         scale: shown ? 1 : 0.8
-
+        
         Component.onCompleted: shown = true
         StackView.onActivating: shown = true
         StackView.onDeactivating: shown = false
@@ -74,12 +74,13 @@ StackView {
                 id: item
 
                 required property QsMenuEntry modelData
+                property bool isHovered: false
 
                 implicitWidth: Config.sizes.bar.trayMenuWidth
                 implicitHeight: modelData.isSeparator ? 1 : children.implicitHeight
 
-                radius: Config.rounding.large
-                color: modelData.isSeparator ? Theme.overlay0 : "transparent"
+                radius: Config.rounding.small
+                color: modelData.isSeparator || isHovered ? Theme.overlay0 : "transparent"
 
                 Loader {
                     id: children
@@ -88,6 +89,7 @@ StackView {
                     anchors {
                         left: parent.left
                         right: parent.right
+                        margins: Config.spacing.small
                     }
 
                     active: !item.modelData.isSeparator
@@ -104,6 +106,14 @@ StackView {
 
                             radius: item.radius
                             disabled: !item.modelData.enabled
+
+                            onEntered: {
+                                item.isHovered = true
+                            }
+
+                            onExited: {
+                                item.isHovered = false
+                            }
 
                             onClicked: {
                                 const entry = item.modelData;
@@ -148,7 +158,7 @@ StackView {
                             id: labelMetrics
 
                             text: item.modelData.text
-                            font.family: Theme.fontFamily
+                            font.family: Config.font.family
 
                             elide: Text.ElideRight
                             elideWidth: {
@@ -200,7 +210,7 @@ StackView {
                             rightMargin: -Config.padding.large
                         }
                         radius: Config.rounding.large
-                        color: Theme.surface1
+                        color: Theme.surface0
 
                         StateLayer {
                             radius: parent.radius

@@ -44,7 +44,8 @@ Item {
     property Title current: text
 
     //clip: true // caution!
-    implicitWidth: icon.implicitWidth + current.implicitWidth + current.anchors.leftMargin
+    // The title's leftPadding already reserves the icon's space
+    implicitWidth: current.implicitWidth + current.anchors.leftMargin
     implicitHeight: Math.max(icon.implicitHeight, current.implicitHeight)
 
     // For bar-popouts
@@ -60,39 +61,32 @@ Item {
         visible: !!ToplevelManager.activeToplevel
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
-        //color: root.color
-        implicitSize: 18
+        implicitSize: Config.font.size.large
         source: Quickshell.iconPath(ToplevelManager.activeToplevel?.appId)
-        //source: Quickshell.iconPath("kitty")
     }
 
     Title {
         id: text
+        font.family: Config.font.family
         font.bold: true
-        padding: icon.width + Config.padding.small
+        font.pixelSize: Config.font.size.small
+        leftPadding: icon.width + Config.padding.small
     }
-
-    // Title {
-    //     id: text2
-    //     visible: false
-    // }
 
     TextMetrics {
         id: metrics
 
         text: root.windowTitle
-        font.family: Theme.fontFamily
+        font.family: Config.font.family
         elide: Qt.ElideRight
         elideWidth: root.maxWidth - icon.width
 
         onTextChanged: {
-            const next = root.current // === text1 ? text2 : text1;
+            const next = root.current;
             next.text = elidedText;
             root.current.visible = false;
             next.visible = true;
             root.current = next;
-
-            //console.debug("[ActiveWindow.TextMetrics]",ToplevelManager.activeToplevel.appId);
         }
 
         onElideWidthChanged: root.current.text = elidedText

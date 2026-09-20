@@ -18,10 +18,10 @@ StyledClippingRect {
 
     property real blur: onSpecial ? 1 : 0
 
-    implicitHeight: Config.sizes.bar.innerHeight ?? 40
+    implicitHeight: Config.sizes.bar.innerHeight - Config.spacing.small
     implicitWidth: layout.implicitWidth + Config.padding.small
     radius: Config.rounding.large
-    color: Theme.surface1
+    color: Theme.surface0
 
     Item {
         anchors.fill: parent
@@ -44,7 +44,7 @@ StyledClippingRect {
             anchors.left: parent.left
             anchors.verticalCenter: parent.verticalCenter
             anchors.leftMargin: Config.spacing.extraSmall
-            spacing: Config.spacing.extraSmall
+            spacing: 0
 
             Repeater {
                 id: workspaces
