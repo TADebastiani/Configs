@@ -71,6 +71,15 @@ RowLayout {
                     }
                 }
             }
+
+            DelegateChoice {
+                roleValue: "statusIcons"
+                delegate: EntryWrapper {
+                    StatusIcons {
+                        objectName: "taskbarStatusIcons"
+                    }
+                }
+            }
         }
     }
 

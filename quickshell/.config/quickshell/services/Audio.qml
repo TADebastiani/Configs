@@ -4,6 +4,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Io
 import Quickshell.Services.Pipewire
+import qs
 
 Singleton {
     id: root
@@ -23,6 +24,23 @@ Singleton {
 
     readonly property bool sourceMuted: !!source?.audio?.muted
     readonly property real sourceVolume: source?.audio?.volume ?? 0
+
+    readonly property bool hasSource: source !== null
+
+    // Volume thresholds live here only. The percentage is rounded so that
+    // 0.33 (which may come as 0.3300001) still counts as 33 %.
+    readonly property string volumeIcon: {
+        const pct = Math.round(volume * 100);
+        if (muted || pct <= 0)
+            return Config.icons.volumeOff;
+        if (pct <= 33)
+            return Config.icons.volumeLow;
+        if (pct <= 66)
+            return Config.icons.volumeMedium;
+        return Config.icons.volumeHigh;
+    }
+
+    readonly property string micIcon: sourceMuted ? Config.icons.micOff : Config.icons.mic
 
     function refreshNodes(): void{
         const newSinks = [];

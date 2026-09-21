@@ -29,7 +29,7 @@ StyledRect {
         return expandIcon.implicitWidth + padding;
     }
 
-    visible: width > 0
+    visible: SystemTray.items.values.length > 0
     implicitHeight: Config.sizes.bar.innerHeight - Config.spacing.small
     implicitWidth: nonAnimWidth
 
