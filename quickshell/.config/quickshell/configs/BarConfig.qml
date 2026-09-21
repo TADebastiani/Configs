@@ -31,19 +31,19 @@ QtObject {
     // Items of the status block, in bar order
     readonly property list<Entry> statusIcons: [
         Entry {
-            entryId: "audio"
-        },
-        Entry {
-            entryId: "microphone"
-        },
-        Entry {
-            entryId: "network"
+            entryId: "kbLayout"
         },
         Entry {
             entryId: "bluetooth"
         },
         Entry {
-            entryId: "kbLayout"
+            entryId: "network"
+        },
+        Entry {
+            entryId: "microphone"
+        },
+        Entry {
+            entryId: "audio"
         }
     ]
 

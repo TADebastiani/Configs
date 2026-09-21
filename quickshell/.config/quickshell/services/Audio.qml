@@ -27,6 +27,31 @@ Singleton {
 
     readonly property bool hasSource: source !== null
 
+    readonly property string sinkName: sink?.description || sink?.name || qsTr("Dispositivo desconhecido")
+    readonly property string sourceName: source?.description || source?.name || qsTr("Dispositivo desconhecido")
+
+    // The volume is written as given: callers (the slider) already clamp it.
+    // `audio` is null until the node is bound, hence the checks.
+    function setVolume(value: real): void {
+        if (sink?.audio)
+            sink.audio.volume = value;
+    }
+
+    function setMuted(muted: bool): void {
+        if (sink?.audio)
+            sink.audio.muted = muted;
+    }
+
+    function setSourceVolume(value: real): void {
+        if (source?.audio)
+            source.audio.volume = value;
+    }
+
+    function setSourceMuted(muted: bool): void {
+        if (source?.audio)
+            source.audio.muted = muted;
+    }
+
     // Volume thresholds live here only. The percentage is rounded so that
     // 0.33 (which may come as 0.3300001) still counts as 33 %.
     readonly property string volumeIcon: {

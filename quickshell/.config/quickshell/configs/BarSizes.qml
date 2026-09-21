@@ -5,6 +5,7 @@ QtObject {
     readonly property int windowPreviewSize: 400
     readonly property int trayMenuWidth: 300
     readonly property int trayMenuHeight: 300
+    readonly property int audioPopoutWidth: 280
     readonly property int batteryHeight: 250
     readonly property int networkHeight: 320
     readonly property int kbLayoutHeight: 320
