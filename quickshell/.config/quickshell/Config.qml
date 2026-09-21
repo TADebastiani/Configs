@@ -17,4 +17,5 @@ Singleton {
     readonly property BorderConfig border: BorderConfig {}
     readonly property BarConfig bar: BarConfig {}
     readonly property FontConfig font: FontConfig {}
+    readonly property IconsConfig icons: IconsConfig {}
 }
