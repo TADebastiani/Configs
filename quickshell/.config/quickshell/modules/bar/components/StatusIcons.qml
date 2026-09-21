@@ -17,8 +17,8 @@ StyledRect {
     // Extra room before the first item, on top of `padding`
     readonly property int startPadding: Config.padding.extraSmall
 
-    // Which status popup is open, if any ("" or "audio"). Held here so that
-    // only one is open at a time when more popouts exist.
+    // Which status popup is open, if any ("", "audio" or "bluetooth"). Held
+    // here so that only one is open at a time.
     property string openPopup
 
     // A popout whose data source vanished must not stay "open" in the
@@ -32,6 +32,14 @@ StyledRect {
     readonly property BluetoothAdapter adapter: Bluetooth.defaultAdapter
     readonly property bool btOn: adapter?.enabled ?? false
     readonly property bool btConnected: [...Bluetooth.devices.values].some(d => d.connected)
+
+    // Same as hasSink: the bluetooth icon hides without an adapter, so its
+    // popout must not stay "open" in the background
+    readonly property bool hasAdapter: adapter !== null
+    onHasAdapterChanged: {
+        if (!hasAdapter && openPopup === "bluetooth")
+            openPopup = "";
+    }
 
     implicitHeight: Config.sizes.bar.innerHeight - Config.spacing.small
     implicitWidth: startPadding + row.implicitWidth + padding * 2
@@ -111,9 +119,36 @@ StyledRect {
                 DelegateChoice {
                     roleValue: "bluetooth"
                     delegate: Glyph {
+                        id: bluetoothIcon
+
                         visible: root.adapter !== null
                         text: !root.btOn ? Config.icons.bluetoothOff : root.btConnected ? Config.icons.bluetoothConnected : Config.icons.bluetooth
                         color: root.btOn ? Theme.text : Theme.subtext0
+
+                        // Glyph is a plain text item: it has no hover of its own
+                        HoverHandler {
+                            id: bluetoothHover
+
+                            onHoveredChanged: {
+                                if (hovered && root.adapter !== null)
+                                    root.openPopup = "bluetooth";
+                            }
+                        }
+
+                        HoverPopup {
+                            target: bluetoothIcon
+                            targetHovered: bluetoothHover.hovered
+                            // Without an adapter there is nothing to show
+                            open: root.openPopup === "bluetooth" && root.adapter !== null
+                            onDismissRequested: {
+                                if (root.openPopup === "bluetooth")
+                                    root.openPopup = "";
+                            }
+
+                            content: Component {
+                                BluetoothPopout {}
+                            }
+                        }
                     }
                 }
 
