@@ -64,7 +64,6 @@ Item {
         source: {
             const appId = ToplevelManager.activeToplevel?.appId;
             const desktopIcon = DesktopEntries.byId(appId)?.icon ?? "";
-            console.debug("[ActiveWindow.windowTitle] desktop icon", desktopIcon);
 
             let icon = Quickshell.iconPath(appId, true);
             if (icon === "")

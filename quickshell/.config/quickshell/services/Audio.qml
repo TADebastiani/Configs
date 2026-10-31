@@ -104,7 +104,8 @@ Singleton {
 
     Connections {
         target: Pipewire.nodes
-        onTargetChanged: {
+
+        function onValuesChanged(): void {
             root.refreshNodes();
         }
     }

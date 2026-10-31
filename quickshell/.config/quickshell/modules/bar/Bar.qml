@@ -1,7 +1,5 @@
 pragma ComponentBehavior: Bound
 
-import "components"
-import "components/workspaces"
 import QtQuick
 import QtQuick.Layouts
 import Quickshell
@@ -9,6 +7,8 @@ import qs
 import qs.configs
 import qs.components
 import qs.services
+import qs.modules.bar.components
+import qs.modules.bar.components.workspaces
 
 RowLayout {
     id: root

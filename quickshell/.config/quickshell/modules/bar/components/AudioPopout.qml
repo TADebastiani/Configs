@@ -5,8 +5,6 @@ import QtQuick.Layouts
 import qs
 import qs.configs
 import qs.components
-// Must come after qs.components: `Audio` has to resolve to the singleton in
-// services, not to components/Audio.qml
 import qs.services
 
 // Content of the audio popout: output row, then input row. Each row hides
