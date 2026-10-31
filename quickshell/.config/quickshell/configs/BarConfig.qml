@@ -5,7 +5,7 @@ QtObject {
     readonly property bool showOnHover: true
     readonly property int dragThreshold: 20
     readonly property int borderWidth: 2
-    readonly property int verticalPadding: 5
+    readonly property int verticalPadding: 3
 
     readonly property list<Entry> entries: [
         Entry {

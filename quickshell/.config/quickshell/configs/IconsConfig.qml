@@ -41,4 +41,20 @@ QtObject {
     readonly property string linkOff: String.fromCodePoint(0xF0338)
     readonly property string trash: String.fromCodePoint(0xF01B4)
     readonly property string loading: String.fromCodePoint(0xF0772)
+
+    // Session menu
+    readonly property string power: String.fromCodePoint(0xF0425)
+    readonly property string restart: String.fromCodePoint(0xF0709)
+    readonly property string sleep: String.fromCodePoint(0xF04B2)
+    readonly property string hibernate: String.fromCodePoint(0xF0717)
+    readonly property string lock: String.fromCodePoint(0xF033E)
+    readonly property string logout: String.fromCodePoint(0xF0343)
+    readonly property string close: String.fromCodePoint(0xF0156)
+
+    // OSD
+    readonly property string brightness: String.fromCodePoint(0xF00E0)
+
+    // Wi-Fi password dialog
+    readonly property string eye: String.fromCodePoint(0xF0208)
+    readonly property string eyeOff: String.fromCodePoint(0xF0209)
 }

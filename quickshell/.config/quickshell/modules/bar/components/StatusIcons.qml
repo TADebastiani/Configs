@@ -17,8 +17,8 @@ StyledRect {
     // Extra room before the first item, on top of `padding`
     readonly property int startPadding: Config.padding.extraSmall
 
-    // Which status popup is open, if any ("", "audio" or "bluetooth"). Held
-    // here so that only one is open at a time.
+    // Which status popup is open, if any ("", "audio", "network" or "bluetooth").
+    // Held here so that only one is open at a time.
     property string openPopup
 
     // A popout whose data source vanished must not stay "open" in the
@@ -41,7 +41,14 @@ StyledRect {
             openPopup = "";
     }
 
-    implicitHeight: Config.sizes.bar.innerHeight - Config.spacing.small
+    // Same as hasSink, and the popout also gives way to the password dialog
+    readonly property bool canOpenNetwork: Network.devices.length > 0 && !Network.passwordOpen
+    onCanOpenNetworkChanged: {
+        if (!canOpenNetwork && openPopup === "network")
+            openPopup = "";
+    }
+
+    implicitHeight: Config.sizes.bar.pillHeight
     implicitWidth: startPadding + row.implicitWidth + padding * 2
 
     color: Theme.surface0
@@ -111,8 +118,34 @@ StyledRect {
                 DelegateChoice {
                     roleValue: "network"
                     delegate: Glyph {
+                        id: networkIcon
+
                         text: Network.icon
                         color: Network.connected ? Theme.text : Theme.subtext0
+
+                        // Glyph is a plain text item: it has no hover of its own
+                        HoverHandler {
+                            id: networkHover
+
+                            onHoveredChanged: {
+                                if (hovered && root.canOpenNetwork)
+                                    root.openPopup = "network";
+                            }
+                        }
+
+                        HoverPopup {
+                            target: networkIcon
+                            targetHovered: networkHover.hovered
+                            open: root.openPopup === "network" && root.canOpenNetwork
+                            onDismissRequested: {
+                                if (root.openPopup === "network")
+                                    root.openPopup = "";
+                            }
+
+                            content: Component {
+                                NetworkPopout {}
+                            }
+                        }
                     }
                 }
 

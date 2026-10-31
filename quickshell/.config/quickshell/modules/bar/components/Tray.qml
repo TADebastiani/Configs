@@ -30,7 +30,7 @@ StyledRect {
     }
 
     visible: SystemTray.items.values.length > 0
-    implicitHeight: Config.sizes.bar.innerHeight - Config.spacing.small
+    implicitHeight: Config.sizes.bar.pillHeight
     implicitWidth: nonAnimWidth
 
     color: Theme.surface0

@@ -20,7 +20,6 @@ Item {
 
     readonly property string windowTitle: {
         const title = ToplevelManager.activeToplevel?.title;
-        //console.debug("[ActiveWindow.windowTitle] title", title);
 
         if (!title)
             return "";
@@ -62,7 +61,16 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         anchors.left: parent.left
         implicitSize: Config.font.size.large
-        source: Quickshell.iconPath(ToplevelManager.activeToplevel?.appId)
+        source: {
+            const appId = ToplevelManager.activeToplevel?.appId;
+            const desktopIcon = DesktopEntries.byId(appId)?.icon ?? "";
+            console.debug("[ActiveWindow.windowTitle] desktop icon", desktopIcon);
+
+            let icon = Quickshell.iconPath(appId, true);
+            if (icon === "")
+                icon = desktopIcon;
+            return icon;
+        }
     }
 
     Title {

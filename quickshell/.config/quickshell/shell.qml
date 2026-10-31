@@ -4,6 +4,9 @@ import Quickshell
 import qs
 import qs.modules.bar
 import qs.modules.drawers
+import qs.modules.network
+import qs.modules.osd
+import qs.modules.session
 import qs.components
 import qs.components.containers
 import qs.services
@@ -21,6 +24,12 @@ ShellRoot {
     }
 
     Drawers {}
+
+    SessionMenu {}
+
+    Osd {}
+
+    PasswordDialog {}
 
     // Variants {
     //     model: Quickshell.screens

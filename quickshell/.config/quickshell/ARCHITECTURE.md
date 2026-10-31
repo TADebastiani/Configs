@@ -39,6 +39,32 @@ import qs.modules.drawers  // modules/drawers/
 basta `import qs` (sem instanciar `Theme {}`) em qualquer arquivo e usar
 `Theme.corDeFundo` direto, igual já é feito com `Quickshell` nativo.
 
+## Config tipado (`Config.qml` + `configs/`)
+
+O LSP (qmlls/qmllint) só enxerga membros de tipos **declarados**. Isto NÃO
+funciona (`Member "thickness" not found on type "QObject"`):
+
+```qml
+readonly property QtObject border: QtObject { readonly property int thickness: 10 }
+```
+
+Cada seção do config vira um arquivo em `configs/` (tipo `QtObject`, sem
+`pragma Singleton`) e o `Config.qml` só a expõe por propriedade **tipada**:
+
+```qml
+import qs.configs
+Singleton {
+    readonly property BorderConfig border: BorderConfig {}
+}
+```
+
+- Seção aninhada (ex.: `sizes.bar`) também é um tipo próprio (`BarSizes`).
+- Curvas de easing são `list<real>`; use
+  `easing.type: Easing.BezierSpline` + `easing.bezierCurve: Config.anim.standard`.
+  (Um `{ type: ...; bezierCurve: ... }` em binding NÃO é objeto, é um bloco.)
+- Adicionou arquivo/propriedade e o Quickshell em execução reclama de `qmldir`?
+  Reinicie o quickshell: o `qmldir` virtual fica em cache no processo.
+
 ## Convenção de pastas sugerida
 
 - `components/` — widgets visuais reutilizáveis (têm UI).
