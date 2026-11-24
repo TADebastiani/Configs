@@ -50,8 +50,6 @@ StyledRect {
         }
         spacing: Config.spacing.small
 
-        opacity: root.expanded ? 0.5 : 1
-
         add: Transition {
             Anim {
                 properties: "scale"
@@ -87,12 +85,6 @@ StyledRect {
                     if (root.menuItem === modelData)
                         root.menuItem = null;
                 }
-            }
-        }
-
-        Behavior on opacity {
-            Anim {
-                type: Anim.DefaultEffects
             }
         }
     }

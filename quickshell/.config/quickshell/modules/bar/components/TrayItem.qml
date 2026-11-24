@@ -33,7 +33,14 @@ MouseArea {
 
     IconImage {
         anchors.fill: parent
-        source: Quickshell.iconPath(root.modelData.icon)
+        source: root.modelData.icon // already an image:// URL, don't wrap in iconPath()
+        opacity: root.containsMouse || root.menuOpen ? 0.5 : 1
+
+        Behavior on opacity {
+            Anim {
+                type: Anim.DefaultEffects
+            }
+        }
     }
 
     HoverPopup {
